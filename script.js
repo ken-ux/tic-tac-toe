@@ -8,12 +8,14 @@ function createPlayer(
   name = prompt("Please enter your name.", "player_one"),
   symbol = prompt("What symbol do you want to use?", "X")
 ) {
-  return { name, symbol };
+  let tiles_taken = [];
+  const getTiles = () => tiles_taken;
+  const takeTiles = (num) => tiles_taken.push(num);
+  return { name, symbol, getTiles, takeTiles };
 }
 
-const computer = (function createComputer() {
-  const { name, symbol } = createPlayer("computer", "O");
-  return { name, symbol };
+const computer = (function () {
+  return createPlayer("computer", "O");
 })();
 
 const player = createPlayer();
