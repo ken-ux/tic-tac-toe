@@ -1,24 +1,46 @@
 const gameBoard = (function () {
   let board = {};
   board.tiles = new Array(9);
-  return board;
+  const getBoard = () => board.tiles;
+  const fillTile = (num, symbol) => {
+    board.tiles[num - 1] = symbol;
+  };
+  return { getBoard, fillTile };
 })();
 
-function createPlayer(
-  name = prompt("Please enter your name.", "player_one"),
-  symbol = prompt("What symbol do you want to use?", "X")
-) {
-  let tiles_taken = [];
-  const getTiles = () => tiles_taken;
-  const takeTiles = (num) => tiles_taken.push(num);
-  return { name, symbol, getTiles, takeTiles };
-}
+const player = (function () {
+  const name = "player";
+  const symbol = "X";
+  return { name, symbol };
+})();
 
 const computer = (function () {
-  return createPlayer("computer", "O");
+  const name = "computer";
+  const symbol = "O";
+  return { name, symbol };
 })();
 
-const player = createPlayer();
-
 // Keeps track of taken spaces, states who wins
-const game = (function () {})();
+const game = (function () {
+  let player_tiles = [];
+  let computer_tiles = [];
+  const getPlayerTiles = () => player_tiles;
+  const getComputerTiles = () => computer_tiles;
+  const makeMove = (user, num) => {
+    if (gameBoard.getBoard()[num - 1] === undefined) {
+      gameBoard.fillTile(num, user.symbol);
+      if (user === player) {
+        player_tiles.push(num);
+      } else {
+        computer_tiles.push(num);
+      }
+    } else {
+      console.log("Sorry, that spot is taken!");
+    }
+  };
+  const checkGame = (user) => {
+    // If user's array has winning combination of spots
+    console.log(user + " won!");
+  };
+  return { getPlayerTiles, getComputerTiles, makeMove, checkGame };
+})();
