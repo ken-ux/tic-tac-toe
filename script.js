@@ -71,6 +71,10 @@ const game = (function () {
         console.log("user has won!");
         break;
       } else {
+        if (!gameBoard.getBoard().includes(undefined)) {
+          console.log("There are no more moves to make!");
+          break;
+        }
         console.log("user does not have numbers in " + winning_combos[i]);
       }
     }
