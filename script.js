@@ -24,6 +24,8 @@ const computer = (function () {
 const game = (function () {
   let player_tiles = [];
   let computer_tiles = [];
+  let game_over = false;
+  let game_over_message = "";
 
   const getPlayerTiles = () => player_tiles;
   const getComputerTiles = () => computer_tiles;
@@ -32,18 +34,18 @@ const game = (function () {
       gameBoard.fillTile(num, user.symbol);
       if (user === player) {
         player_tiles.push(num);
-        checkGame(player_tiles);
+        checkGame(player.name, player_tiles);
         // Make computer do a move
       } else {
         computer_tiles.push(num);
-        checkGame(computer_tiles);
+        checkGame(computer.name, computer_tiles);
       }
     } else {
       console.log("Sorry, that spot is taken!");
     }
   };
 
-  const checkGame = (tiles) => {
+  const checkGame = (username, tiles) => {
     let winning_combos = [
       [1, 2, 3],
       [1, 5, 9],
@@ -56,6 +58,10 @@ const game = (function () {
     ];
 
     for (let i = 0; i < winning_combos.length; i++) {
+      if (game_over) {
+        console.log(game_over_message);
+        break;
+      }
       let valid_combo = false;
       let combo = winning_combos[i];
 
@@ -67,15 +73,21 @@ const game = (function () {
           break;
         }
       }
+
       if (valid_combo) {
-        console.log("user has won!");
+        console.log(username + " has won!");
+        game_over = true;
+        game_over_message = username + " has already won, stop making moves!";
         break;
       } else {
         if (!gameBoard.getBoard().includes(undefined)) {
-          console.log("There are no more moves to make!");
+          game_over = true;
+          game_over_message = "There are no more moves to make, stop trying!";
           break;
         }
-        console.log("user does not have numbers in " + winning_combos[i]);
+        console.log(
+          username + " does not have numbers in " + winning_combos[i]
+        );
       }
     }
   };
