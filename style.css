@@ -12,6 +12,11 @@ h1 {
   border-radius: 10px;
 }
 
+p {
+    font-size: 32px;
+    color: darkcyan;
+}
+
 .container {
   padding-top: 50px;
   width: 490px;
