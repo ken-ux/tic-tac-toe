@@ -5,6 +5,10 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+a {
+  text-decoration: none;
+}
+
 h1 {
   background-color: darkcyan;
   color: white;
@@ -13,8 +17,8 @@ h1 {
 }
 
 p {
-    font-size: 32px;
-    color: darkcyan;
+  font-size: 32px;
+  color: darkcyan;
 }
 
 .container {
