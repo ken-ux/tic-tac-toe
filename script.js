@@ -1,3 +1,5 @@
+let result = document.querySelector("p");
+
 const gameBoard = (function () {
   let board = {};
   board.tiles = new Array(9);
@@ -24,22 +26,22 @@ const computer = (function () {
 const game = (function () {
   let player_tiles = [];
   let computer_tiles = [];
+  let computer_made_move = false; // Prevents computer from making multiple moves in a row
   let game_over = false;
-  let game_over_message = "";
 
   const getPlayerTiles = () => player_tiles;
   const getComputerTiles = () => computer_tiles;
   const makeMove = (user, num, tile) => {
-    if (game_over) {
-      console.log(game_over_message);
-    } else {
+    if (!game_over) {
       if (gameBoard.getBoard()[num - 1] === undefined) {
         gameBoard.fillTile(num, user.symbol);
         if (user === player) {
           tile.textContent = "X";
           player_tiles.push(num);
+          computer_made_move = false;
           checkGame(player.name, player_tiles);
         } else {
+          tile.textContent = "O";
           computer_tiles.push(num);
           checkGame(computer.name, computer_tiles);
         }
@@ -61,37 +63,46 @@ const game = (function () {
       [7, 8, 9],
     ];
 
-    if (game_over) {
-      console.log(game_over_message);
-    } else {
-      for (let i = 0; i < winning_combos.length; i++) {
-        let valid_combo = false;
-        let combo = winning_combos[i];
+    for (let i = 0; i < winning_combos.length; i++) {
+      let valid_combo = false;
+      let combo = winning_combos[i];
 
-        for (let j = 0; j < combo.length; j++) {
-          if (tiles.includes(combo[j])) {
-            valid_combo = true;
-          } else {
-            valid_combo = false;
-            break;
-          }
-        }
-
-        if (valid_combo) {
-          console.log(username + " has won!");
-          game_over = true;
-          game_over_message = username + " has already won, stop making moves!";
-          break;
-        } else if (!gameBoard.getBoard().includes(undefined)) {
-          game_over = true;
-          game_over_message = "There are no more moves to make, stop trying!";
-          break;
+      for (let j = 0; j < combo.length; j++) {
+        if (tiles.includes(combo[j])) {
+          valid_combo = true;
         } else {
-          console.log(
-            username + " does not have numbers in " + winning_combos[i]
-          );
+          valid_combo = false;
+          break;
         }
       }
+
+      if (valid_combo) {
+        game_over = true;
+        result.textContent =
+          username[0].toUpperCase() +
+          username.slice(1).toLowerCase() +
+          " has won!";
+        break;
+      } else if (!gameBoard.getBoard().includes(undefined)) {
+        game_over = true;
+        result.textContent = "There are no more moves to make, stop trying!";
+        break;
+      }
+    }
+
+    // Computer makes move if it hasn't already
+    if (!computer_made_move) {
+      let tiles = document.querySelectorAll(".tile");
+      let empty_tiles = {};
+      for (i = 0; i < tiles.length; i++) {
+        if (tiles[i].textContent === "") {
+          empty_tiles[i + 1] = tiles[i];
+        }
+      }
+      let keys = Object.keys(empty_tiles);
+      let rand_choice = keys[Math.floor(Math.random() * keys.length)];
+      computer_made_move = true;
+      makeMove(computer, rand_choice, empty_tiles[rand_choice]);
     }
   };
   return { getPlayerTiles, getComputerTiles, makeMove, checkGame };
