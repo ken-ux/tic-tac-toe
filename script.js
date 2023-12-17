@@ -83,20 +83,20 @@ const game = (function () {
       [7, 8, 9],
     ];
     console.log(username);
-    console.log(tiles);
 
-    for (let j = 0; j < winning_combos.length; j++) {
+    for (let i = 0; i < winning_combos.length; i++) {
       let valid_combo = false;
-      let combo = winning_combos[j];
+      let combo = winning_combos[i];
 
-      for (let k = 0; k < combo.length; k++) {
-        if (tiles.includes(combo[k])) {
+      for (let j = 0; j < combo.length; j++) {
+        if (tiles.includes(combo[j])) {
           valid_combo = true;
         } else {
           valid_combo = false;
           break;
         }
       }
+
       if (valid_combo) {
         game_over = true;
         result.textContent =
@@ -104,11 +104,11 @@ const game = (function () {
           username.slice(1).toLowerCase() +
           " has won!";
         break;
-      } else if (!gameBoard.getBoard().includes(undefined)) {
-        game_over = true;
-        result.textContent = "There are no more moves to make, stop trying!";
-        break;
       }
+    }
+    if (!game_over && !gameBoard.getBoard().includes(undefined)) {
+      game_over = true;
+      result.textContent = "Tie! There are no more moves to make!";
     }
   };
   return { getPlayerTiles, getComputerTiles, makeMove, checkGame };
