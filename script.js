@@ -82,7 +82,6 @@ const game = (function () {
       [4, 5, 6],
       [7, 8, 9],
     ];
-    console.log(username);
 
     for (let i = 0; i < winning_combos.length; i++) {
       let valid_combo = false;
